@@ -1,0 +1,26 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+- job: RunJMeterTests
+  displayName: 'Run JMeter Tests'
+  steps:
+  - script: |
+      # Download JMeter
+      wget https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.4.1.tgz
+      tar -xzf apache-jmeter-5.4.1.tgz
+      export JMETER_HOME=$(pwd)/apache-jmeter-5.4.1
+
+      # Run JMeter test plan
+      $JMETER_HOME/bin/jmeter -n -t sample.jmx
+
+    displayName: 'Run JMeter Test'
+
